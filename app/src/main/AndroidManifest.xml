@@ -3,6 +3,8 @@
     package="com.example.imfine">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -12,15 +14,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ImFINE"
         android:usesCleartextTraffic="true">
-        <activity android:name=".VideoCall"></activity>
-        <activity android:name=".mypage" />
-        <activity android:name=".splash" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".VideoCall" android:hardwareAccelerated="true"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            >
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".mypage" />
+        <activity android:name=".splash" />
+        <activity android:name=".MainActivity">
+
         </activity>
         <activity android:name=".login" />
     </application>
