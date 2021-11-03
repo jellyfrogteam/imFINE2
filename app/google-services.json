@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "700041355885",
+    "project_id": "imfine-4a4e5",
+    "storage_bucket": "imfine-4a4e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700041355885:android:c99dcf4f32a296b4dbd564",
+        "android_client_info": {
+          "package_name": "com.example.imfine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700041355885-t6fk08kmlfos3cc2fuskklar244njj5d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.imfine",
+            "certificate_hash": "476bb0119ac16a2a41c921dc44edf030ca8669c1"
+          }
+        },
+        {
+          "client_id": "700041355885-lfp8vm9ove5o5s2trrn85dlbujbsl6s0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMeq1pRqQdJAWBmNFLBzc2LGu9pRbtIZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700041355885-lfp8vm9ove5o5s2trrn85dlbujbsl6s0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

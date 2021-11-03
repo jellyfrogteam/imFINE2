@@ -1,9 +1,11 @@
 package com.example.imfine
 
 import android.Manifest
+import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -12,6 +14,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.imfine.MainActivity.Companion.Room_ID
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class VideoCall : AppCompatActivity() {
@@ -52,10 +57,12 @@ class VideoCall : AppCompatActivity() {
         //webView.settings.domStorageEnabled = true;  // 로컬 스토리지 (localStorage) 사용여부
 
 
-
         //웹페이지 호출
 //        webView.loadUrl("http://www.naver.com");
-        webView.loadUrl("https://imfine-211027.herokuapp.com");
+        var webUrl = "https://imfine-211027.herokuapp.com/"
+        webView.loadUrl(webUrl.plus(Room_ID))
+        Log.d("Adad",webUrl.plus(Room_ID))
+        //웹뷰 자체에서 전체화면
     }
 
     fun checkPermission() {
@@ -85,7 +92,7 @@ class VideoCall : AppCompatActivity() {
                 )
             } else {
                 // 권한이 있는 경우
-                Toast.makeText(this, "카메라,audio를 실행합니다", Toast.LENGTH_LONG).show()
+               // Toast.makeText(this, "카메라,audio를 실행합니다", Toast.LENGTH_LONG).show()
             }
         }
 

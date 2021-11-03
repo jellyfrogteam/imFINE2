@@ -27,18 +27,21 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".VideoCall" android:hardwareAccelerated="true"
             android:configChanges="keyboardHidden|orientation|screenSize">
+
+        </activity>
+
+        <activity android:name=".mypage" />
+        <activity android:name=".splash" />
+        <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mypage" />
-        <activity android:name=".splash" />
-        <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".login" />
     </application>
 
 </manifest>
