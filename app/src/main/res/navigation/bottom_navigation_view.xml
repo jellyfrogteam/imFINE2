@@ -8,17 +8,17 @@
 <!--    main_bottom_navigation에 있는 아이템 id들하고 같아야함-->
     <fragment
         android:id="@+id/home"
-        android:name="com.example.snowscrab.HomeFragment"
+        android:name="com.example.imfine.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/profile"
-        android:name="com.example.snowscrab.ProfileFragment"
+        android:name="com.example.imfine.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/search"
-        android:name="com.example.snowscrab.SearchFragment"
+        android:name="com.example.imfine.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
 </navigation>
