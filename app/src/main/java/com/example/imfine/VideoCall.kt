@@ -60,6 +60,8 @@ class VideoCall : AppCompatActivity() {
         var webUrl = "https://imfine-211027.herokuapp.com/"
         webView.loadUrl(webUrl.plus(Room_ID))
         Log.d("Adad",webUrl.plus(Room_ID))
+
+
         //웹뷰 자체에서 전체화면
     }
 
