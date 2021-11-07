@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="default_Color">#FFFECC47</color>
-    <color name="default2_Color">#FFFFD463</color>
+    <color name="default_Color">#FFFFD463</color>
+    <color name="default2_Color">#FFFECC47</color>
     <color name="background_Color">#FABE39</color>
     <color name="point_Color">#FFA7927D</color>
     <color name="text_Color">#FFFFFF</color>

@@ -57,12 +57,10 @@ class MainActivity : AppCompatActivity() {
 
         test_btn.setOnClickListener {
             startActivity(videoCall)
-            finish()
         }
 
         myPage_btn.setOnClickListener {
             startActivity(mypage)
-            finish()
         }
     }
 }

@@ -1,19 +1,17 @@
 package com.example.imfine
 
-import android.Manifest
-import android.content.ContentValues.TAG
-import android.content.pm.PackageManager
+import android.app.PendingIntent.getActivity
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
 import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.imfine.MainActivity.Companion.Room_ID
 
 
@@ -24,7 +22,6 @@ class VideoCall : AppCompatActivity() {
 
         val webView = findViewById<WebView>(R.id.webview)
 
-        checkPermission()
         webView.webViewClient = WebViewClient() // 새 창 띄우기 않기
 
         webView.webChromeClient = object : WebChromeClient() {
@@ -55,78 +52,52 @@ class VideoCall : AppCompatActivity() {
         //webView.settings.domStorageEnabled = true;  // 로컬 스토리지 (localStorage) 사용여부
 
 
+//        webView.setOnKeyListener(object : DialogInterface.OnKeyListener() {
+//            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+//                if (event.getAction() === KeyEvent.ACTION_DOWN) {
+//                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                        if (webView != null) {
+//                            if (webView.canGoBack()) {
+//                                webView.goBack()
+//                            } else {
+//                                getActivity().onBackPressed()
+//                            }
+//                        }
+//                    }
+//                }
+//                return true
+//            }
+//        })
+
+
         //웹페이지 호출
 //        webView.loadUrl("http://www.naver.com");
         var webUrl = "https://imfine-211027.herokuapp.com/"
-        webView.loadUrl(webUrl.plus(Room_ID))
+        //webView.loadUrl(webUrl.plus(Room_ID))
+        webView.loadUrl(webUrl)
         Log.d("Adad",webUrl.plus(Room_ID))
 
 
         //웹뷰 자체에서 전체화면
     }
 
-    fun checkPermission() {
 
-        val permissions = arrayOf<String>(
-            Manifest.permission.CAMERA,
-            Manifest.permission.CHANGE_NETWORK_STATE,
-            Manifest.permission.MODIFY_AUDIO_SETTINGS,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.BLUETOOTH,
-            Manifest.permission.INTERNET,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_NETWORK_STATE
-        )
+    override fun onBackPressed() {
+        // 뒤로 가기 버튼을 눌렀을때 웹페이지 내에서 뒤로 가기가 있으면 해주고 아니면, 앱 뒤로가기 실행.
+        val webView = findViewById<WebView>(R.id.webview)
 
-        for(i in permissions){
-            val per = ContextCompat.checkSelfPermission(
-                this@VideoCall,
-                i
-            )
-            if (per != PackageManager.PERMISSION_GRANTED) {
-                // 권한이 없는 경우 permission 권한을 띄우는 알람창을 띄운다.
-                ActivityCompat.requestPermissions(
-                    this,
-                    permissions,
-                    1000
-                )
-            } else {
-                // 권한이 있는 경우
-               // Toast.makeText(this, "카메라,audio를 실행합니다", Toast.LENGTH_LONG).show()
-            }
+        // 웹뷰 액티비티 들어가고나서 뒤로가기로 빠져나오면 방(파이어베이스)이 삭제가 안됨
+        // (앱을 뒤로가기로 종료도 아니고 완전히 종료해야 사라짐.)
+        // 그래서 뒤로가기키 눌렀을때 웹뷰자체를 종료시킴
+        // +++되긴되는데 방이 생성되자마자 빠르게 빠져나오면 작동안됨
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            finish()
+            webView.clearCache(true)
+            webView.destroy()
+            Log.d("delete", "backpressed")
         }
 
     }
-
-    //권한을 두는 팝업창에 사용자가 Deny Eh또는 수락을 클릭하면 액태비티의 onRequestPermissionResult()가 호출된다. 이 메서드 안에서 승인 후 처리하면 된다.
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1000) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Toast 창 띄우기
-                Toast.makeText(this, "카메라,audio를 실행합니다", Toast.LENGTH_LONG).show()
-            } else {
-                // 액티비티 끝내기
-                finish()
-            }
-        }
-    }
-
-
-    /*  override fun onBackPressed() {
-          // 뒤로 가기 버튼을 눌렀을때 웹페이지 내에서 뒤로 가기가 있으면 해주고 아니면, 앱 뒤로가기 실행.
-          val webView = findViewById<WebView>(R.id.webview)
-          if(webView.canGoBack())
-          {
-              webView.goBack()
-          }
-          else
-          {
-              finish()
-          }
-      }*/
 }
