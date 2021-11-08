@@ -70,14 +70,14 @@ class login :AppCompatActivity(){
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
-        val mainActivity = Intent(this, MainActivity::class.java)
+        val mainPage = Intent(this, MainPage::class.java)
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
-                    startActivity(mainActivity)
+                    startActivity(mainPage)
                     finish()
 
 
