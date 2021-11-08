@@ -67,8 +67,6 @@ class HomeFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_home, container, false)
         // Inflate the layout for this fragment
 
-        checkPermission()
-
         val oneOne:ImageButton = view.findViewById(R.id.oneone)
         val everyOne:ImageButton = view.findViewById(R.id.everyone)
 
@@ -85,63 +83,7 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    private fun checkPermission() {
 
-        val permissions = arrayOf<String>(
-            Manifest.permission.CAMERA,
-            Manifest.permission.CHANGE_NETWORK_STATE,
-            Manifest.permission.MODIFY_AUDIO_SETTINGS,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.BLUETOOTH,
-            Manifest.permission.INTERNET,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_NETWORK_STATE
-        )
-
-        for(i in permissions){
-            val per = activity?.let {
-                ContextCompat.checkSelfPermission(
-                    it,
-                    i
-                )
-            }
-            if (per != PackageManager.PERMISSION_GRANTED) {
-                // 권한이 없는 경우 permission 권한을 띄우는 알람창을 띄운다.
-                activity?.let {
-                    ActivityCompat.requestPermissions(
-                        it,
-                        permissions,
-                        1000
-                    )
-                }
-            } else {
-                // 권한이 있는 경우
-                // Toast.makeText(this, "카메라,audio를 실행합니다", Toast.LENGTH_LONG).show()
-            }
-        }
-
-    }
-
-    //권한을 두는 팝업창에 사용자가 Deny Eh또는 수락을 클릭하면 액태비티의 onRequestPermissionResult()가 호출된다. 이 메서드 안에서 승인 후 처리하면 된다.
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1000) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Toast 창 띄우기
-                Toast.makeText(activity, "카메라,audio를 실행합니다", Toast.LENGTH_LONG).show()
-            } else {
-                // 액티비티 끝내기
-                activity?.supportFragmentManager
-                    ?.beginTransaction()
-                    ?.remove(this)
-                    ?.commit()
-            }
-        }
-    }
 
 
     //카메라 프리뷰
