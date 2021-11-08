@@ -73,8 +73,8 @@ class HomeFragment : Fragment() {
         val everyOne:ImageButton = view.findViewById(R.id.everyone)
 
         oneOne.setOnClickListener {
-            val videoCall = Intent(activity, VideoCall::class.java)
-            startActivity(videoCall)
+            val splashFind = Intent(activity, SplashFind::class.java)
+            startActivity(splashFind)
         }
 
         surfaceView = view.findViewById(R.id.surfaceView)
@@ -201,6 +201,7 @@ class HomeFragment : Fragment() {
                 ImageFormat.JPEG,
                 7
             )
+
             if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED
             ) return
@@ -227,7 +228,7 @@ class HomeFragment : Fragment() {
     }
 
     private val deviceStateCallback = object : CameraDevice.StateCallback() {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @RequiresApi(api = Build.VERSION_CODES.R)
         override fun onOpened(camera: CameraDevice) {
             mCameraDevice = camera
             try {
@@ -260,12 +261,13 @@ class HomeFragment : Fragment() {
     private fun setAspectRatioTextureView(ResolutionWidth: Int, ResolutionHeight: Int) {
         if (ResolutionWidth > ResolutionHeight) {
             val newWidth = mWidth
-            val newHeight = mWidth * ResolutionWidth / ResolutionHeight
+            val newHeight = mWidth * ResolutionHeight / ResolutionWidth //373
+            Log.d("heightAAA", mWidth.toString())
             updateTextureViewSize(newWidth, newHeight)
-
         } else {
             val newWidth = mWidth
             val newHeight = mWidth * ResolutionHeight / ResolutionWidth
+            Log.d("heightAAA", mWidth.toString())
             updateTextureViewSize(newWidth, newHeight)
         }
 

@@ -4,20 +4,20 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.splash.*
+import kotlinx.android.synthetic.main.splashloading.*
+import kotlinx.android.synthetic.main.splashloading.*
 
-class splash : AppCompatActivity() {
+class SplashLoading : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.splash)
+        setContentView(R.layout.splashloading)
         val login = Intent(this, login::class.java)
-        val mainActivity = Intent(this,MainActivity::class.java)
+        val mainPage = Intent(this,MainPage::class.java)
 
             animationView.setOnClickListener {
                 if (FirebaseAuth.getInstance().currentUser?.uid != null) {
-                    accountAvailable(mainActivity)
+                    accountAvailable(mainPage)
                 }
                 else
                 {

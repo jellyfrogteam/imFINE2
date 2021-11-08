@@ -12,7 +12,8 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.example.imfine.MainActivity.Companion.Room_ID
+import com.example.imfine.SplashFind.Companion.Room_ID
+import com.example.imfine.SplashFind.Companion.roomExists
 
 
 class VideoCall : AppCompatActivity() {
@@ -73,8 +74,14 @@ class VideoCall : AppCompatActivity() {
         //웹페이지 호출
 //        webView.loadUrl("http://www.naver.com");
         var webUrl = "https://imfine-211027.herokuapp.com/"
+        if(roomExists){
+            webView.loadUrl(webUrl.plus(Room_ID))
+        }
+        else{
+            webView.loadUrl(webUrl)
+        }
         //webView.loadUrl(webUrl.plus(Room_ID))
-        webView.loadUrl(webUrl)
+        //webView.loadUrl(webUrl)
         Log.d("Adad",webUrl.plus(Room_ID))
 
 

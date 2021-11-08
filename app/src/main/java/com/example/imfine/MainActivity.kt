@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    companion object{
-        var Room_ID : String? = null
-    }
+//    companion object{
+//        var Room_ID : String? = null
+//    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,19 +41,19 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        db.collection("rooms")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
-                    Room_ID = document.id
-                    Log.d("Adad", Room_ID!!)
-                    break
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error getting documents.", exception)
-            }
+//        db.collection("rooms")
+//            .get()
+//            .addOnSuccessListener { result ->
+//                for (document in result) {
+//                    Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
+//                    Room_ID = document.id
+//                    Log.d("Adad", Room_ID!!)
+//                    break
+//                }
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.w(ContentValues.TAG, "Error getting documents.", exception)
+//            }
 
         test_btn.setOnClickListener {
             startActivity(videoCall)
