@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 모바일웹 화면 핀치 강제차단 -->
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <meta name="HandheldFriendly" content="true">
+    <script src="script.js" defer></script>
+<!--    <script type="text/javascript">-->
+
+<!--       const localVideo = document.getElementById('localVideo')-->
+<!--       localVideo.muted = true //html에서 태그자체에 muted 해줌-->
+
+<!--        let cameraSwitching = true-->
+
+<!--       const defaultMediaConstraint = {-->
+<!--         video: true,-->
+<!--         audio: true-->
+<!--       }-->
+
+<!--       const backCameraMediaConstraint = {-->
+<!--         audio: true,-->
+<!--         video: { facingMode: { exact: "environment" } }-->
+<!--       }-->
+
+
+<!--       navigator.mediaDevices.getUserMedia(defaultMediaConstraint).then(stream => {-->
+<!--         // 웹캠의 비디오 스트림을 비디오 요소에 추가-->
+<!--         localStream = stream-->
+<!--         addVideoStream(localVideo, stream)-->
+<!--       })-->
+
+
+<!--       function frontCamera() {-->
+<!--         navigator.mediaDevices.getUserMedia(defaultMediaConstraint).then(stream => {-->
+<!--           // 웹캠의 비디오 스트림을 비디오 요소에 추가-->
+<!--           addVideoStream(remoteVideo, stream)-->
+<!--         })-->
+<!--       }-->
+
+<!--       function backCamera() {-->
+<!--          navigator.mediaDevices.getUserMedia(backCameraMediaConstraint).then(stream => {-->
+<!--          // 웹캠의 비디오 스트림을 비디오 요소에 추가-->
+<!--          remoteVideo.msHorizontalMirror = true-->
+<!--          addVideoStream(remoteVideo, stream)-->
+<!--          // remoteVideo.play()-->
+<!--          })-->
+<!--        }-->
+
+<!--        function addVideoStream(video, stream) {-->
+<!--          video.srcObject = stream-->
+<!--          video.addEventListener('loadedmetadata', () => {-->
+<!--            video.play()-->
+<!--          })-->
+<!--          // videoGrid.append(video)-->
+
+<!--        }-->
+
+<!--        function doMessage() {-->
+<!--            if (window.MyApp && window.MyApp.callMessage) {-->
+<!--                window.MyApp.callMessage();-->
+<!--            } else {-->
+<!--                alert("해당 기능은 어플에서만 이용 가능합니다.");-->
+<!--            }-->
+<!--        }-->
+<!--        doMessage()-->
+<!--        function callback(message){-->
+<!--            if(!message){-->
+<!--                backCamera()-->
+<!--            }else{-->
+<!--                frontCamera()-->
+<!--            }-->
+<!--            alert(message);-->
+<!--        }-->
+
+<!--    </script>-->
+    <title>Document</title>
+    <style>
+        html{ /* 모바일웹 화면 핀치 강제차단 */
+            -webkit-text-size-adjust: none;
+            text-size-adjust: none;
+        }
+        html, body {
+            margin: 0px;
+            padding: 0px;
+        }
+        video{         
+            transform: rotateY(180deg);         
+            -webkit-transform:rotateY(180deg); /* Safari and Chrome */         
+            -moz-transform:rotateY(180deg); /* Firefox */     
+        }
+        #localVideo{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    </style>
+</head>
+<body>
+<video id="localVideo" autoplay muted playsinline></video>
+</body>
+
+</html>

@@ -28,25 +28,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ImFINE"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        >
         <activity
             android:name=".VideoCall"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:hardwareAccelerated="true"
-            android:theme="@style/Theme.ImFINE.NoActionBar"></activity>
-        <activity android:name=".mypage"></activity>
-        <activity android:name=".SplashLoading">
+            >
+
+        </activity>
+        <activity android:name=".mypage"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            ></activity>
+        <activity android:name=".SplashLoading"
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".login" />
-        <activity android:name=".MainPage"></activity>
-        <activity android:name=".SplashFind">
-
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            ></activity>
+        <activity android:name=".login"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            />
+        <activity android:name=".MainPage"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            ></activity>
+        <activity android:name=".SplashFind"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            >
         </activity>
     </application>
 

@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val videoCall = Intent(this, VideoCall::class.java)
         val mypage = Intent(this, mypage::class.java)
-        val db = Firebase.firestore
+
 
 
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 //        그럼 전달받은 데이터를 다시 액티비티a에서 메소드로 프래그먼트에 넘겨주면 프래그먼트와 액티비티b의 통신이 이루어진다.
 
 
-
+//          val db = Firebase.firestore
 //        db.collection("rooms")
 //            .get()
 //            .addOnSuccessListener { result ->

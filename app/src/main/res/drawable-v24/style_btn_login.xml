@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="false">
         <shape>
-            <solid android:color="@color/default_Color"></solid>
-            <corners android:radius="8dp"></corners>
+            <solid android:color="@color/text_Color"></solid>
+            <corners android:radius="20dp"></corners>
             <size
                 android:width="334dp"
                 android:height="40dp"
@@ -13,8 +13,8 @@
     </item>
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/default2_Color"></solid>
-            <corners android:radius="8dp"></corners>
+            <solid android:color="@color/text_Color"></solid>
+            <corners android:radius="20dp"></corners>
             <size
                 android:width="334dp"
                 android:height="40dp"

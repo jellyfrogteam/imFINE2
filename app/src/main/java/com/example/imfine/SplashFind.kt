@@ -26,20 +26,27 @@ class SplashFind : AppCompatActivity() {
         val videoCall = Intent(this, VideoCall::class.java)
 
         val db = Firebase.firestore
-        animationView_find.setOnClickListener {
             accountAvailable(videoCall)
-        }
+
 
         db.collection("rooms")
             .get()
             .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
-                    Room_ID = document.id
-                    roomExists = true
-                    Log.d("Adad", Room_ID!!)
-                    break
+                if (!result.isEmpty) {
+                    for (document in result) {
+                        Log.d(ContentValues.TAG, "${document.id} => ${document.data}")
+                        Room_ID = document.id
+                        roomExists = true
+                        Log.d("Adad", Room_ID!!)
+                        Log.d("roomTest", "파이어베이스에서 방 찾았음${Room_ID.toString()}")
+                        break
+                    }
+                }else {
+                    Room_ID = ""
+                    roomExists = false
+                    Log.d("roomTest", "파이어베이스에서 방 못찾음${Room_ID.toString()}")
                 }
+
             }
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents.", exception)
@@ -57,6 +64,6 @@ class SplashFind : AppCompatActivity() {
             overridePendingTransition(anim.fade_in, anim.fade_out)
             startActivity(intent)
             finish()
-        }, 1000)
+        }, 4000)
     }
 }

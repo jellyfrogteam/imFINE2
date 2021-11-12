@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">#f4f9ff</item> <!-- 상단바 색 배경색 같음 -->
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimary">@color/background_Color</item>
+        <item name="colorPrimaryDark">@color/background_Color</item>
+        <item name="colorAccent">@color/default2_Color</item>
+    </style>
+</resources>

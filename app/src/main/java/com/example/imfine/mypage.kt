@@ -12,16 +12,8 @@ class mypage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.mypage)
 
-        val login = Intent(this,login::class.java)
-        google_logout.setOnClickListener {
-                signOut()
-                Toast.makeText(this,"구글 로그아웃 성공", Toast.LENGTH_LONG).show()
-                startActivity(login)
-                finish()
-        }
+
     }
 
-    private fun signOut() {
-        FirebaseAuth.getInstance().signOut()
-    }
+
 }
