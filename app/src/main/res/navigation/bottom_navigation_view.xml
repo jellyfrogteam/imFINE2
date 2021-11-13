@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/search"
-        android:name="com.example.imfine.SearchFragment"
+        android:name="com.example.imfine.FriendFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
 </navigation>

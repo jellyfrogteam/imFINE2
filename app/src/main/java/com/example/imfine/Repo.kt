@@ -3,10 +3,7 @@ package com.example.imfine
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -16,7 +13,14 @@ class Repo {
     fun getData(): LiveData<MutableList<ChatArea>> {
         val mutableData = MutableLiveData<MutableList<ChatArea>>()
         val database = Firebase.database
-        val myRef = database.getReference("User")
+        val myRef = database.getReference(SplashFind.Room_ID!!)
+//        var myRef:DatabaseReference? = null
+//        if(SplashFind.Room_ID!!.isNullOrBlank()){
+//            myRef = database.getReference(CustomBridge.bridge_ROOM_ID)
+//        }else{
+//            myRef = database.getReference(SplashFind.Room_ID!!)
+//        }
+
 //        myRef.addValueEventListener(object : ValueEventListener {
 //            val listData: MutableList<ChatArea> = mutableListOf<ChatArea>()
 //            override fun onDataChange(snapshot: DataSnapshot) {

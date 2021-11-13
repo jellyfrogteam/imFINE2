@@ -1,18 +1,20 @@
 package com.example.imfine
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,20 +23,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.imfine.SplashFind.Companion.Room_ID
 import com.example.imfine.SplashFind.Companion.roomExists
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.rv_chat.*
 import kotlinx.android.synthetic.main.videocall.*
-import java.text.SimpleDateFormat
 
 
 class VideoCall : AppCompatActivity() {
 
     private lateinit var webView:WebView
 
+    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChatRecyclerViewAdapter
     private val viewModel by lazy { ViewModelProvider(this).get(ChatListViewModel::class.java) }
 
@@ -136,13 +136,24 @@ class VideoCall : AppCompatActivity() {
 
         //채팅 부분
         adapter = ChatRecyclerViewAdapter(this)
-        val recyclerView: RecyclerView = findViewById(R.id.rv_chat)
+        recyclerView = findViewById(R.id.rv_chat)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
         val database = Firebase.database
-        val myRef = database.getReference("User")
+        val myRef = database.getReference(Room_ID!!)
+//        var myRef: DatabaseReference? = null
+//        if(Room_ID.isNullOrBlank()){
+//            myRef = database.getReference(CustomBridge.bridge_ROOM_ID)
+//        }else{
+//            myRef = database.getReference(Room_ID!!)
+//        }
+        Log.d("ROOOOOOOMID", Room_ID!!)
         val acct = GoogleSignIn.getLastSignedInAccount(this)
+        val rvLayout = layoutInflater.inflate(R.layout.rv_chat, null, false)
+        val rvChatArea = rvLayout.findViewById<LinearLayout>(R.id.rv_chat_layout)
+
+
         if (acct != null) {
             usrName = acct.displayName
             usrEmail = acct.email
@@ -159,22 +170,32 @@ class VideoCall : AppCompatActivity() {
                 randomRoom.child("nickName").setValue(usrName)
 
 
-                //rv_chat_layout.gravity = View.FOCUS_LEFT
-
-
-
                 observerData()
             }else{
+            }
+        }
 
+        myRef.addChildEventListener(object : ChildEventListener{
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                observerData()
             }
 
-        }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) { }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) { }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) { }
+
+            override fun onCancelled(error: DatabaseError) { }
+        })
+
     }
 
     fun observerData(){
         viewModel.fetchData().observe(this, Observer {
             adapter.setListData(it)
             adapter.notifyDataSetChanged()
+            recyclerView.scrollToPosition(it.size -1)
         })
     }
 

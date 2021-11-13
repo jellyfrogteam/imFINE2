@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment">
+    tools:context=".FriendFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="SEARCH"
-        android:textSize="50sp"
-        android:gravity="center"/>
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/friend_rv"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/default2_Color"/>
 
 </FrameLayout>

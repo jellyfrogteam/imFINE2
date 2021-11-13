@@ -1,17 +1,21 @@
 package com.example.imfine
 
 import android.Manifest
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.splashloading.*
-import kotlinx.android.synthetic.main.splashloading.*
+
 
 class SplashLoading : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +23,7 @@ class SplashLoading : AppCompatActivity() {
         setContentView(R.layout.splashloading)
         val login = Intent(this, login::class.java)
         val mainPage = Intent(this, MainPage::class.java)
+
 
         checkPermission()
 
@@ -29,8 +34,6 @@ class SplashLoading : AppCompatActivity() {
                 accountAvailable(login)
             }
         }
-
-
     }
 
     private fun accountAvailable(intent: Intent) {

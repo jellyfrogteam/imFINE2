@@ -106,6 +106,7 @@
                 android:id="@+id/edittext_sendMsg"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
+                android:maxLines="1"
                 android:hint="채팅 입력"/>
 
             <Button
