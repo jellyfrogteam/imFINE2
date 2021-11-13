@@ -34,6 +34,7 @@
             android:name=".VideoCall"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             >
 
         </activity>

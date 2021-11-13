@@ -12,94 +12,46 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imfine.SplashFind.Companion.Room_ID
 import com.example.imfine.SplashFind.Companion.roomExists
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.rv_chat.*
 import kotlinx.android.synthetic.main.videocall.*
-import org.jetbrains.annotations.Nullable
+import java.text.SimpleDateFormat
 
 
 class VideoCall : AppCompatActivity() {
 
     private lateinit var webView:WebView
-    private var mRecyclerView: RecyclerView? = null
-    private val mAdapter: RecyclerView.Adapter<*>? = null
-    private var mLayoutManager: RecyclerView.LayoutManager? = null
-    private var chatList: List<ChatData>? = null
-    private val nick = "nick2" // 1:1 or 1:da로
 
+    private lateinit var adapter: ChatRecyclerViewAdapter
+    private val viewModel by lazy { ViewModelProvider(this).get(ChatListViewModel::class.java) }
 
-    private var EditText_chat: EditText? = null
-    private var Button_send: Button? = null
-    private var myRef: DatabaseReference? = null
+    private var usrName: String? = null
+    private var usrEmail: String? = null
+    private var usrId: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.videocall)
 
-        Button_send = findViewById(R.id.btn_send)
-        EditText_chat = findViewById(R.id.edittext_sendMsg)
+//        전송 버튼을 누르면 상대방 아이디와 채팅한 적있는지 검사한다. : MessageActivity - chekChatRoom()
+//        메시지를 보낸다. : MessageActivity - sendMsgToDataBase()
+//        리싸이클러뷰 어댑터를 통해 채팅 내용을 읽어들인다.  : RecyclerViewAdapter - getMessageList()
 
-        //샌드 눌렀을떄
-        //샌드 눌렀을떄
-        Button_send!!.setOnClickListener(View.OnClickListener {
-            val msg = EditText_chat!!.text.toString() //msg
-            //널이 아닐때만 값전송하게
-            if (msg != null) {
-                val chat = ChatData(nick,msg)  // 오류 났을때 확인해 보기
-                chat.nickname = nick
-                chat.msg = msg
-                myRef!!.push().setValue(chat) //setValue(chat)에서 수정 push() 붙였음
-            }
-        })
-
-        mRecyclerView = findViewById(R.id.rv_chat);
-        mRecyclerView!!.setHasFixedSize(true);
-        mLayoutManager = LinearLayoutManager(this);
-        mRecyclerView!!.layoutManager = mLayoutManager;
-
-        chatList = ArrayList()
-        //어뎁터
-
-        // Write a message to the database
-        //database 선언과 생성
-        // Write a message to the database
-        //database 선언과 생성
-        val database = FirebaseDatabase.getInstance()
-        //message를 참조(getReference)해서 가져옴.
-        //message를 참조(getReference)해서 가져옴.
-        myRef = database.reference
-
-        /* ChatData chat = new ChatData();
-        chat.setNickname(nick);
-        chat.setMsg("hi");
-        myRef.setValue(chat);*/
-        //주의사항
-
-
-        /* ChatData chat = new ChatData();
-        chat.setNickname(nick);
-        chat.setMsg("hi");
-        myRef.setValue(chat);*/
-        //주의사항
-        myRef!!.addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, @Nullable s: String?) {}
-            override fun onChildChanged(dataSnapshot: DataSnapshot, @Nullable s: String?) {}
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {}
-            override fun onChildMoved(dataSnapshot: DataSnapshot, @Nullable s: String?) {}
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-        //0.채팅 앱 만들기
-        //1. recycleView - 어떤 데이터를 반복해 보여주는 용도로 많이씀.
-        //2. 데이터베이서 내용을 넣는다.
-        //3. 상대방폰에 채팅 내용이 보이게.
-
-        //1-1. recycleview - chat data
-        //1. message, nickname, ismine - Data Transfer Object(데이터를 교환하는 객체
+        var btnChatSwitch = true
 
 
         val splashFind=Intent(this,SplashFind::class.java)
@@ -165,6 +117,16 @@ class VideoCall : AppCompatActivity() {
             finish()
         }
 
+        btn_chat.setOnClickListener {
+            if(btnChatSwitch){
+                chat_area.visibility = View.VISIBLE
+                btnChatSwitch = false
+            }else {
+                chat_area.visibility = View.GONE
+                btnChatSwitch = true
+            }
+        }
+
         //웹뷰 자체에서 전체화면
 
         val handler = Handler()
@@ -172,8 +134,48 @@ class VideoCall : AppCompatActivity() {
             btn_cameraswitch.visibility = View.VISIBLE
         }, 10000) //딜레이 타임 조절
 
+        //채팅 부분
+        adapter = ChatRecyclerViewAdapter(this)
+        val recyclerView: RecyclerView = findViewById(R.id.rv_chat)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+
+        val database = Firebase.database
+        val myRef = database.getReference("User")
+        val acct = GoogleSignIn.getLastSignedInAccount(this)
+        if (acct != null) {
+            usrName = acct.displayName
+            usrEmail = acct.email
+            usrId = acct.id
+        }
+        btn_send.setOnClickListener {
+
+            if(!edittext_sendMsg.text.isNullOrEmpty()){
+                val msgText = edittext_sendMsg.text
+                Log.d("chatTest", msgText.toString())
+
+                val randomRoom = myRef.push()
+                randomRoom.child("msg").setValue(msgText.toString())
+                randomRoom.child("nickName").setValue(usrName)
 
 
+                //rv_chat_layout.gravity = View.FOCUS_LEFT
+
+
+
+                observerData()
+            }else{
+
+            }
+
+        }
+    }
+
+    fun observerData(){
+        viewModel.fetchData().observe(this, Observer {
+            adapter.setListData(it)
+            adapter.notifyDataSetChanged()
+        })
     }
 
 
@@ -197,6 +199,14 @@ class VideoCall : AppCompatActivity() {
 
 
     }
+
+//    override fun onBackPressed() {
+//        val intent = Intent(this@MessageActivity, MainHome::class.java)
+//        intent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                or Intent.FLAG_ACTIVITY_NEW_TASK)
+//        startActivity(intent)
+//        overridePendingTransition(R.anim.in_left, R.anim.out_right)
+//    }
 
 
     override fun onStop() {
