@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootView"
     tools:context=".VideoCall">
-
 
     <WebView
         android:id="@+id/webview"
@@ -36,6 +36,7 @@
         android:layout_height="45dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="25dp"
+        android:visibility="gone"
         android:background="@drawable/style_btn_srien"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_cameraswitch"/>
@@ -66,6 +67,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginRight="15dp"
+        android:visibility="gone"
         android:background="@drawable/style_btn_next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -76,16 +78,16 @@
         android:layout_width="200dp"
         android:layout_height="300dp"
         android:layout_marginBottom="20dp"
-        android:background="#48000000"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_chat">
+<!--        android:background="#48000000"-->
 
+<!--            android:background="#74FFFFFF"-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat"
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:background="#74FFFFFF"
             app:layout_constraintBottom_toTopOf="@id/send_layout"
             tools:listitem="@layout/rv_chat"/>
 <!--            android:layout_alignParentRight="true"-->
@@ -121,5 +123,6 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

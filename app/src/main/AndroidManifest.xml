@@ -30,6 +30,8 @@
         android:theme="@style/Theme.ImFINE"
         android:usesCleartextTraffic="true"
         >
+
+
         <activity
             android:name=".VideoCall"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -63,6 +65,17 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             >
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.imfine"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
     </application>
 
 </manifest>

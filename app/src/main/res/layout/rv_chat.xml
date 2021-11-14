@@ -5,13 +5,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/rv_chat_layout"
+    android:background="@drawable/style_chat"
+    android:layout_marginBottom="5dp"
     android:gravity="center">
 
 
     <TextView
         android:id="@+id/nickName"
         android:text="닉네임"
-        android:textSize="12dp"
+        android:textSize="11dp"
         android:textStyle="italic|bold"
         android:textColor="@color/sub2_Color"
         android:layout_width="wrap_content"
@@ -24,7 +26,7 @@
         android:gravity="center_horizontal"
         android:text="메시지"
         android:textStyle="normal"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:textColor="#4E4E4E"/>
 
 

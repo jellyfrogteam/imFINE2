@@ -68,6 +68,7 @@ class HomeFragment : Fragment() {
         //웹페이지 호출
         webView2.loadUrl(webUrl)
 
+
     /*   val bridge = CustomBridgePreview(context,webView)
         webView.addJavascriptInterface(bridge,"MyApp")*/
 
