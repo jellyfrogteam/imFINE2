@@ -38,6 +38,10 @@ class VideoCall : AppCompatActivity() {
     private lateinit var adapter: ChatRecyclerViewAdapter
     private val viewModel by lazy { ViewModelProvider(this).get(ChatListViewModel::class.java) }
 
+    val database = Firebase.database
+    var myRef: DatabaseReference? = null
+    var randomRoom: DatabaseReference? = null
+
     private var usrName: String? = null
     private var usrEmail: String? = null
     private var usrId: String? = null
@@ -105,8 +109,11 @@ class VideoCall : AppCompatActivity() {
         //webView.loadUrl(webUrl.plus(Room_ID))
         //webView.loadUrl(webUrl)
         Log.d("Adad",webUrl.plus(Room_ID))
+
         val bridge = CustomBridge(this,webView)
         webView.addJavascriptInterface(bridge,"MyApp")
+
+
 
         btn_next.setOnClickListener {
             startActivity(splashFind)
@@ -134,60 +141,124 @@ class VideoCall : AppCompatActivity() {
             btn_cameraswitch.visibility = View.VISIBLE
         }, 10000) //딜레이 타임 조절
 
-        //채팅 부분
-        adapter = ChatRecyclerViewAdapter(this)
-        recyclerView = findViewById(R.id.rv_chat)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+        handler.postDelayed(Runnable {
+            //채팅 부분
+            adapter = ChatRecyclerViewAdapter(this)
+            recyclerView = findViewById(R.id.rv_chat)
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView.adapter = adapter
 
-        val database = Firebase.database
-        val myRef = database.getReference(Room_ID!!)
-//        var myRef: DatabaseReference? = null
+
+            if (Room_ID.isNullOrBlank()) {
+                myRef = database.getReference(CustomBridge.bridge_ROOM_ID)
+            } else {
+                myRef = database.getReference(Room_ID!!)
+            }
+            Log.d("ROOOOOOOMID", Room_ID!!)
+            val acct = GoogleSignIn.getLastSignedInAccount(this)
+            val rvLayout = layoutInflater.inflate(R.layout.rv_chat, null, false)
+            val rvChatArea = rvLayout.findViewById<LinearLayout>(R.id.rv_chat_layout)
+
+
+            if (acct != null) {
+                usrName = acct.displayName
+                usrEmail = acct.email
+                usrId = acct.id
+            }
+
+            btn_chat.visibility = View.VISIBLE
+
+            btn_send.setOnClickListener {
+
+                if (!edittext_sendMsg.text.isNullOrEmpty()) {
+                    val msgText = edittext_sendMsg.text
+                    Log.d("chatTest", msgText.toString())
+
+                    randomRoom = myRef!!.push()
+                    randomRoom!!.child("msg").setValue(msgText.toString())
+                    randomRoom!!.child("nickName").setValue(usrName)
+
+
+                    observerData()
+                } else {
+                }
+
+                edittext_sendMsg.setText("")
+            }
+
+            myRef!!.addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    observerData()
+                }
+
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {
+                    finish()
+                }
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+
+        }, 5000)
+
+//        //채팅 부분
+//        adapter = ChatRecyclerViewAdapter(this)
+//        recyclerView = findViewById(R.id.rv_chat)
+//        recyclerView.layoutManager = LinearLayoutManager(this)
+//        recyclerView.adapter = adapter
+//
+//        val database = Firebase.database
+//        var myRef: DatabaseReference?
 //        if(Room_ID.isNullOrBlank()){
-//            myRef = database.getReference(CustomBridge.bridge_ROOM_ID)
+//            myRef = database.getReference("123")
 //        }else{
 //            myRef = database.getReference(Room_ID!!)
 //        }
-        Log.d("ROOOOOOOMID", Room_ID!!)
-        val acct = GoogleSignIn.getLastSignedInAccount(this)
-        val rvLayout = layoutInflater.inflate(R.layout.rv_chat, null, false)
-        val rvChatArea = rvLayout.findViewById<LinearLayout>(R.id.rv_chat_layout)
-
-
-        if (acct != null) {
-            usrName = acct.displayName
-            usrEmail = acct.email
-            usrId = acct.id
-        }
-        btn_send.setOnClickListener {
-
-            if(!edittext_sendMsg.text.isNullOrEmpty()){
-                val msgText = edittext_sendMsg.text
-                Log.d("chatTest", msgText.toString())
-
-                val randomRoom = myRef.push()
-                randomRoom.child("msg").setValue(msgText.toString())
-                randomRoom.child("nickName").setValue(usrName)
-
-
-                observerData()
-            }else{
-            }
-        }
-
-        myRef.addChildEventListener(object : ChildEventListener{
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                observerData()
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) { }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) { }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) { }
-
-            override fun onCancelled(error: DatabaseError) { }
-        })
+//        Log.d("ROOOOOOOMID", Room_ID!!)
+//        val acct = GoogleSignIn.getLastSignedInAccount(this)
+//        val rvLayout = layoutInflater.inflate(R.layout.rv_chat, null, false)
+//        val rvChatArea = rvLayout.findViewById<LinearLayout>(R.id.rv_chat_layout)
+//
+//
+//        if (acct != null) {
+//            usrName = acct.displayName
+//            usrEmail = acct.email
+//            usrId = acct.id
+//        }
+//        btn_send.setOnClickListener {
+//
+//            if(!edittext_sendMsg.text.isNullOrEmpty()){
+//                val msgText = edittext_sendMsg.text
+//                Log.d("chatTest", msgText.toString())
+//
+//                val randomRoom = myRef.push()
+//                randomRoom.child("msg").setValue(msgText.toString())
+//                randomRoom.child("nickName").setValue(usrName)
+//
+//
+//                observerData()
+//            }else{
+//            }
+//
+//            edittext_sendMsg.setText("")
+//        }
+//
+//        myRef.addChildEventListener(object : ChildEventListener{
+//            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//                observerData()
+//            }
+//
+//            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) { }
+//
+//            override fun onChildRemoved(snapshot: DataSnapshot) { }
+//
+//            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) { }
+//
+//            override fun onCancelled(error: DatabaseError) { }
+//        })
 
     }
 
@@ -212,8 +283,7 @@ class VideoCall : AppCompatActivity() {
             webView.goBack()
         } else {
             finish()
-            webView.clearCache(true)
-            webView.destroy()
+            destroyWebviewAndFirebase()
             Log.d("delete", "backpressed")
             Log.d("roomTest", "뒤로가기키 누르고 난 후${Room_ID.toString()}")
         }
@@ -232,16 +302,24 @@ class VideoCall : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        webView.clearCache(true)
-        webView.destroy()
+        destroyWebviewAndFirebase()
         Log.d("roomTest", "onStop${Room_ID.toString()}")
     }
     override fun onDestroy() {
         super.onDestroy()
-        webView.clearCache(true)
-        webView.destroy()
+        destroyWebviewAndFirebase()
         Log.d("roomTest", "onDestroy${Room_ID.toString()}")
     }
 
+    override fun onPause() {
+        super.onPause()
+        destroyWebviewAndFirebase()
+    }
+
+    fun destroyWebviewAndFirebase(){
+        webView.clearCache(true)
+        webView.destroy()
+        myRef!!.setValue(null)
+    }
 
 }

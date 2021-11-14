@@ -5,10 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".FriendFragment">
 
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/friend_rv"
+  <TextView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@color/default2_Color"/>
+      android:text="Friend"
+      android:textSize="50dp"
+      android:gravity="center"
+      />
 
 </FrameLayout>

@@ -13,13 +13,12 @@ class Repo {
     fun getData(): LiveData<MutableList<ChatArea>> {
         val mutableData = MutableLiveData<MutableList<ChatArea>>()
         val database = Firebase.database
-        val myRef = database.getReference(SplashFind.Room_ID!!)
-//        var myRef:DatabaseReference? = null
-//        if(SplashFind.Room_ID!!.isNullOrBlank()){
-//            myRef = database.getReference(CustomBridge.bridge_ROOM_ID)
-//        }else{
-//            myRef = database.getReference(SplashFind.Room_ID!!)
-//        }
+        var myRef: DatabaseReference?
+        if(SplashFind.Room_ID!!.isNullOrBlank()){
+            myRef = database.getReference(CustomBridge.bridge_ROOM_ID)
+        }else{
+            myRef = database.getReference(SplashFind.Room_ID!!)
+        }
 
 //        myRef.addValueEventListener(object : ValueEventListener {
 //            val listData: MutableList<ChatArea> = mutableListOf<ChatArea>()

@@ -57,6 +57,7 @@
             />
         <activity android:name=".MainPage"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             ></activity>
         <activity android:name=".SplashFind"
             android:configChanges="orientation|keyboardHidden|screenSize"

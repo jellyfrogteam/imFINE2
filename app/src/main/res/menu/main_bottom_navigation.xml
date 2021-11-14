@@ -9,7 +9,7 @@
         android:title="@string/nav_Home"
         android:icon="@drawable/ic_baseline_home_24"/>
     <item
-        android:id="@+id/search"
-        android:title="@string/nav_Search"
+        android:id="@+id/friend"
+        android:title="@string/nav_Friend"
         android:icon="@drawable/ic_baseline_search_24"/>
 </menu>

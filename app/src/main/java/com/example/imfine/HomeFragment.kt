@@ -3,6 +3,7 @@ package com.example.imfine
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,6 +85,11 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        webView2.destroy()
+    }
+
     override fun onPause() {
         super.onPause()
         webView2.destroy()
@@ -91,6 +97,9 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("FragmentView", webView2.toString())
+        Log.d("FragmentView", "onResume")
+        Log.d("FragmentView", webUrl)
         webView2.loadUrl(webUrl)
     }
 

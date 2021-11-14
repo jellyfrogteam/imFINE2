@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="mainPage">mainPage</string>
     <string name="nav_Home">홈</string>
-    <string name="nav_Search">검색</string>
+    <string name="nav_Friend">친구</string>
     <string name="nav_Profile">프로필</string>
     <string name="title_activity_splashfind">splashfind</string>
     <!-- Strings used for fragments for navigation -->

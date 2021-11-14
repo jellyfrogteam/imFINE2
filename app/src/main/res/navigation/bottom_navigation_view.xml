@@ -17,8 +17,8 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
-        android:id="@+id/search"
+        android:id="@+id/friend"
         android:name="com.example.imfine.FriendFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_friend" />
 </navigation>
