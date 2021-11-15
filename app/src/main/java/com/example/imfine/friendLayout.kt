@@ -1,4 +1,4 @@
 package com.example.imfine
 
-class friendLayout(val img: Int, val username: String) {
+class friendLayout(val img: String, val username: String) {
 }

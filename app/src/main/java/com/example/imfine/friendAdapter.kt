@@ -1,5 +1,6 @@
 package com.example.imfine
 
+import android.graphics.Movie
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,8 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
-class friendAdapter(val currentUser: String, val itemList: ArrayList<friendLayout>): RecyclerView.Adapter<friendAdapter.ViewHolder>() {
+
+class friendAdapter(val currentUser: String,
+                    val itemList: ArrayList<friendLayout>,
+                    val items: ArrayList<friendLayout>): RecyclerView.Adapter<friendAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): friendAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.friend_layout, parent, false)
@@ -16,12 +22,20 @@ class friendAdapter(val currentUser: String, val itemList: ArrayList<friendLayou
     }
 
     override fun onBindViewHolder(holder: friendAdapter.ViewHolder, position: Int) {
+
         holder.username.text = itemList[position].username
+
+        val item: friendLayout = items[position]
+        Glide.with(holder.itemView.context)
+            .load(item.img).apply(RequestOptions().circleCrop())
+            .into(holder.img)
     }
 
     override fun getItemCount(): Int {
+
         return itemList.size
     }
+
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val card: CardView = itemView.findViewById(R.id.chat_card_view)
         var img: ImageView = itemView.findViewById(R.id.img)

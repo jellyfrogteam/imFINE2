@@ -8,6 +8,7 @@
     <string name="nav_Home">홈</string>
     <string name="nav_Friend">친구</string>
     <string name="nav_Profile">프로필</string>
+    <string name="friend_add_wait">친구 요청 대기중</string>
     <string name="title_activity_splashfind">splashfind</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

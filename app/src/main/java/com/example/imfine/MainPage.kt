@@ -25,21 +25,21 @@ class MainPage : AppCompatActivity(){
         val navController = findNavController(R.id.navController)
         bottomNavigationView.setupWithNavController(navController)
 
-        mainPageLayout.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                hideKeyboard()
-                return false
-            }
-        })
+//        mainPageLayout.setOnTouchListener(object : View.OnTouchListener {
+//            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+//                hideKeyboard()
+//                return false
+//            }
+//        })
 
     }
 
-    fun hideKeyboard() {
-        val inputManager: InputMethodManager =
-            this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(
-            this.currentFocus!!.windowToken,
-            InputMethodManager.HIDE_NOT_ALWAYS
-        )
-    }
+//    fun hideKeyboard() { //가끔 메인화면에서 팅기는 이유는 이 함수 때문...
+//        val inputManager: InputMethodManager =
+//            this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputManager.hideSoftInputFromWindow(
+//            this.currentFocus!!.windowToken,
+//            InputMethodManager.HIDE_NOT_ALWAYS
+//        )
+//    }
 }

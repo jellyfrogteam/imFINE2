@@ -4,12 +4,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FriendFragment">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+      <EditText
+          android:id="@+id/friend_email"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:singleLine="true"
+          android:background="@drawable/style_edittext_box"
+          android:inputType="textEmailAddress"
+          android:hint="친구 Email" />
+
+      <Button
+          android:id="@+id/add_friend"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_weight="2"
+          android:background="@drawable/style_btn_login_box"
+          android:text="친구추가"
+          android:textSize="13sp"
+          android:textStyle="bold" />
+      <Button
+          android:id="@+id/btn_test"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="asdasda"/>
+
+    </LinearLayout>
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/friend_rv"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@color/default2_Color"
+      android:padding="30dp"
       />
+  </LinearLayout>
+
 
 </FrameLayout>

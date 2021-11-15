@@ -30,7 +30,7 @@ class CustomBridge(context: VideoCall, webview:WebView) {
 
     @JavascriptInterface
     fun callMessage(roomid: String) {
-        Toast.makeText(mContext, "Web에서 호출된 메시지입니다.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(mContext, "버튼 로딩중 입니다", Toast.LENGTH_SHORT).show()
 
         // Web으로 호출을 반환시, 동일 Activity로는 수행이 불가능하기때문에 스레드를 하나 생성해 호출해주어야합니다.
         mHandler!!.post {

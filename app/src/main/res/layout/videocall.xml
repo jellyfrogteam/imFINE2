@@ -58,6 +58,7 @@
         android:layout_height="45dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
+        android:visibility="gone"
         android:background="@drawable/style_btn_exit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -109,7 +110,7 @@
                 android:id="@+id/edittext_sendMsg"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:hint="채팅 입력"/>
 
             <Button

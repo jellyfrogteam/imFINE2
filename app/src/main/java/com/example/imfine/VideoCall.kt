@@ -14,6 +14,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
@@ -35,9 +36,12 @@ import kotlinx.android.synthetic.main.videocall.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.NullPointerException
 
 
 class VideoCall : AppCompatActivity() {
+    private val FINISH_INTERVAL_TIME: Long = 2000
+    private var backPressedTime: Long = 0
 
     private lateinit var webView:WebView
 
@@ -130,6 +134,8 @@ class VideoCall : AppCompatActivity() {
         }
 
         btn_exit.setOnClickListener {
+            //onDestroy()
+            //webView.onPause()
             finish()
         }
 
@@ -155,6 +161,7 @@ class VideoCall : AppCompatActivity() {
             btn_chat.visibility = View.VISIBLE
             btn_siren.visibility = View.VISIBLE
             btn_next.visibility = View.VISIBLE
+            btn_exit.visibility = View.VISIBLE
         }, 5000) //딜레이 타임 조절
 
         //채팅 부분
@@ -290,13 +297,6 @@ class VideoCall : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
-        // 뒤로 가기 버튼을 눌렀을때 웹페이지 내에서 뒤로 가기가 있으면 해주고 아니면, 앱 뒤로가기 실행.
-
-        // 웹뷰 액티비티 들어가고나서 뒤로가기로 빠져나오면 방(파이어베이스)이 삭제가 안됨
-        // (앱을 뒤로가기로 종료도 아니고 완전히 종료해야 사라짐.)
-        // 그래서 뒤로가기키 눌렀을때 웹뷰자체를 종료시킴
-        // +++되긴되는데 방이 생성되자마자 빠르게 빠져나오면 작동안됨
         if (webView.canGoBack()) {
             webView.goBack()
         } else {
@@ -305,9 +305,31 @@ class VideoCall : AppCompatActivity() {
             Log.d("delete", "backpressed")
             Log.d("roomTest", "뒤로가기키 누르고 난 후${Room_ID.toString()}")
         }
-
-
     }
+
+
+//    override fun onBackPressed() {
+//        val tempTime = System.currentTimeMillis()
+//        val intervalTime: Long = tempTime - backPressedTime
+//        if (intervalTime in 0..FINISH_INTERVAL_TIME) {
+//            super.onBackPressed()
+//            //moveTaskToBack(true)		// 태스크를 백그라운드로 이동
+//            // 뒤로 가기 버튼을 눌렀을때 웹페이지 내에서 뒤로 가기가 있으면 해주고 아니면, 앱 뒤로가기 실행.
+//            if (webView.canGoBack()) {
+//                webView.goBack()
+//            } else {
+//                destroyWebviewAndFirebase()
+//                finish()
+//                Log.d("delete", "backpressed")
+//                Log.d("roomTest", "뒤로가기키 누르고 난 후${Room_ID.toString()}")
+//            }
+//            finishAndRemoveTask()				// 액티비티 종료 + 태스크 리스트에서 지우기
+//            android.os.Process.killProcess(android.os.Process.myPid())
+//        } else {
+//            backPressedTime = tempTime
+//            Toast.makeText(this, "뒤로 버튼을 한번 더 누르시면 통화가 종료됩니다", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
 //    override fun onBackPressed() {
 //        val intent = Intent(this@MessageActivity, MainHome::class.java)
@@ -320,21 +342,26 @@ class VideoCall : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        webView.destroy()
         destroyWebviewAndFirebase()
         Log.d("roomTest", "onDestroy${Room_ID.toString()}")
     }
 
     override fun onPause() {
         super.onPause()
+        webView.destroy()
         destroyWebviewAndFirebase()
     }
+
 
     fun destroyWebviewAndFirebase(){
         webView.clearCache(true)
         webView.destroy()
-        if(!myRef!!.key.isNullOrEmpty()){
+
+        if (!myRef!!.key.isNullOrEmpty()) {
             myRef!!.setValue(null)
         }
+
     }
 
 }

@@ -12,6 +12,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.login.*
 
@@ -72,9 +73,28 @@ class login :AppCompatActivity(){
     private fun firebaseAuthWithGoogle(idToken: String) {
         val mainPage = Intent(this, MainPage::class.java)
         val credential = GoogleAuthProvider.getCredential(idToken, null)
+        val db = Firebase.firestore
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+
+                    //자신의 계정으로 친구목록 생성
+                    val acct = GoogleSignIn.getLastSignedInAccount(this)
+
+                    val friendInfo = hashMapOf(
+                        "name" to "email"
+                    )
+
+                    db.collection("Friends").document(acct.email)
+                        .set(friendInfo)
+                        .addOnSuccessListener {
+
+                        }.addOnFailureListener {
+
+                        }
+
+
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     startActivity(mainPage)
