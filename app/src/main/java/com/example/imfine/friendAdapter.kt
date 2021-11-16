@@ -13,8 +13,8 @@ import com.bumptech.glide.request.RequestOptions
 
 
 class friendAdapter(val currentUser: String,
-                    val itemList: ArrayList<friendLayout>,
-                    val items: ArrayList<friendLayout>): RecyclerView.Adapter<friendAdapter.ViewHolder>() {
+                    private val itemList: ArrayList<friendLayout>,
+                    private val items: ArrayList<friendLayout>): RecyclerView.Adapter<friendAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): friendAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.friend_layout, parent, false)

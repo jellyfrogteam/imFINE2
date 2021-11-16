@@ -12,6 +12,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.login.*
@@ -74,15 +75,18 @@ class login :AppCompatActivity(){
         val mainPage = Intent(this, MainPage::class.java)
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         val db = Firebase.firestore
+        val database = Firebase.database
+
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
 
-                    //자신의 계정으로 친구목록 생성
+                    //ㄷ다시 로그인 할때 데이터 셋
+                    //자신의 계정으로 친구목록 생성                    ------FireStore-------
                     val acct = GoogleSignIn.getLastSignedInAccount(this)
 
                     val friendInfo = hashMapOf(
-                        "name" to "email"
+                        " " to " "
                     )
 
                     db.collection("Friends").document(acct.email)

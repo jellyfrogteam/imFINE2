@@ -100,6 +100,7 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         webView2.destroy()
+        //어플 백그라운드로 가면 웹뷰때문에 소리,마이크(ex.디스코드 통화소리) 제대로 작동안함
     }
 
     override fun onResume() {
