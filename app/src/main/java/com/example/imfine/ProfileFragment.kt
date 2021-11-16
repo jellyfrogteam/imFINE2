@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment() {
-
+    private var mAuth: FirebaseAuth? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,11 +23,12 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         // Inflate the layout for this fragment
-        val google_logout : Button? = activity?.findViewById(R.id.google_logout)
+        val btn_google_exit : Button? = view.findViewById(R.id.btn_google_exit)
         val login = Intent(activity,login::class.java)
-        google_logout?.setOnClickListener {
-            signOut()
-            Toast.makeText(activity,"구글 로그아웃 성공", Toast.LENGTH_LONG).show()
+        mAuth = FirebaseAuth.getInstance()
+        btn_google_exit?.setOnClickListener {
+            revokeAccess()
+            Toast.makeText(activity,"구글 탈퇴 성공", Toast.LENGTH_LONG).show()
             startActivity(login)
             activity?.finish()
 
@@ -41,10 +42,13 @@ class ProfileFragment : Fragment() {
 
         return view
     }
-    private fun signOut() {
+  /*  private fun signOut() {
         FirebaseAuth.getInstance().signOut()
     }
-
+*/
+    private fun revokeAccess() {
+        mAuth?.currentUser?.delete()
+    }
 //    fun hideKeyboard() { //가끔 메인화면에서 팅기는 이유는 이 함수 때문...
 //        val inputManager: InputMethodManager =
 //            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
