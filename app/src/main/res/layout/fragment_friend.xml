@@ -42,7 +42,8 @@
       android:id="@+id/friend_rv"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:padding="30dp"/>
+      android:padding="30dp"
+      tools:listitem="@layout/friend_layout"/>
   </LinearLayout>
 
   <ImageButton

@@ -51,7 +51,7 @@ class FriendFragment : Fragment() {
         var items = arrayListOf<friendLayout>()
 
         var friendEmailList: ArrayList<String> = arrayListOf("tmp")
-
+        var friendEmailListLocal: ArrayList<String> = arrayListOf("tmp")
 
     }
 
@@ -179,14 +179,14 @@ class FriendFragment : Fragment() {
                                 val status = values[2].trim()
                                 Log.d(
                                     "FirestoreTestVALUES",
-                                    "name: ${name}, photoUrl: ${photoUrl}, status: ${status}"
+                                    "name: ${name}, photoUrl: ${photoUrl}, status: $status"
                                 )
                                 val itemAdd = AddFriendLayout(photoUrl, name)
                                 addItems.add(itemAdd) // 사진url
                                 addFriendList.add(itemAdd) //친구이름
 
                                 //arrayList 중복검사
-                                if(!friendEmailList.contains(emailFull) && !friendEmailList.contains(emailFull)){
+                                if(!friendEmailList.contains(emailFull) && !friendEmailList.contains(name)){
                                     friendEmailList.add(emailFull)
                                     friendEmailList.add(name)
                                 }
@@ -238,6 +238,11 @@ class FriendFragment : Fragment() {
                                 friendList.add(item) //구글 이름
                                 items.add(item) // 사진url
                                 adapter.notifyDataSetChanged()
+
+                                //arrayList 중복검사
+                                if(!friendEmailListLocal.contains(emailFull)){
+                                    friendEmailListLocal.add(emailFull)
+                                }
                             }else {
                                 friendList.remove(item) //구글 이름
                                 items.remove(item) // 사진url

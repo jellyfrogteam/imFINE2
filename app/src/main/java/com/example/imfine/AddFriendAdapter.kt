@@ -15,6 +15,7 @@ import com.example.imfine.FriendFragment.Companion.friendList
 import com.example.imfine.FriendFragment.Companion.items
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -94,6 +95,7 @@ class AddFriendAdapter(val currentUser: String,
                 val db = Firebase.firestore
                 val acct = GoogleSignIn.getLastSignedInAccount(itemView.context)
 
+                val remoteFriend = db.collection("Friends").document(emailList)
 
                 val localFriendRef = db.collection("Friends").document(acct.email)
                 localFriendRef.get()
@@ -125,6 +127,13 @@ class AddFriendAdapter(val currentUser: String,
                                                 friendEmailList.remove(emailList)
                                                 friendEmailList.remove(name)
                                                 Log.d("UpdateTest", friendEmailList.toString())
+
+                                                //친구 요청 보낸 사용자도 이메일 추가
+                                                remoteFriend.update(
+                                                    acct.email,
+//                                                    name.plus(", ").plus(photoUrl).plus(", ").plus("수락됨")
+                                                    acct.displayName.plus(", ").plus(acct.photoUrl).plus(", ").plus("수락됨")
+                                                )
                                             }
                                             .addOnFailureListener {
 
@@ -139,6 +148,68 @@ class AddFriendAdapter(val currentUser: String,
             btnDeny.setOnClickListener {
 //                FriendFragment.friendPosition(position)
 //                FriendFragment.friendType(false)
+
+
+//                val docRef = db.collection("cities").document("BJ")
+//
+//                  // Remove the 'capital' field from the document
+//                val updates = hashMapOf<String, Any>(
+//                    "capital" to FieldValue.delete()
+//                )
+//
+//                docRef.update(updates).addOnCompleteListener { }
+
+
+
+                val friendEmailList = FriendFragment.friendEmailList
+                friendEmailList.remove("tmp")
+                //홀수인덱스: 이메일, 짝수인덱스: 이름
+                Log.d("friendEmailFull", friendEmailList.toString())
+                Log.d("friendEmailFull", adapterPosition.toString())
+                Log.d("friendEmailFullINDEX", friendEmailList[adapterPosition*2])
+                val emailList = friendEmailList[adapterPosition*2]
+
+
+                val db = Firebase.firestore
+                val acct = GoogleSignIn.getLastSignedInAccount(itemView.context)
+
+
+                val localFriendRef = db.collection("Friends").document(acct.email)
+                localFriendRef.get()
+                    .addOnSuccessListener {
+//                var name = ""
+//                var photoUrl = ""
+//                var status = ""
+                        for (i in it.data?.keys!!) {
+                            val emailFull = i.toString().plus(".com")
+
+                            if (emailFull == emailList) {
+                                it?.getString(emailFull)?.let {
+                                    Log.d("FirestoreTest", it)
+                                    val values: List<String> = it.split(",")
+                                    val name = values[0]
+                                    val photoUrl = values[1].trim()
+                                    val status = values[2].trim()
+                                    Log.d(
+                                        "FirestoreTestVALUES",
+                                        "name: ${name}, photoUrl: ${photoUrl}, status: ${status}"
+                                    )
+
+                                    // Remove the 'capital' field from the document
+                                    val updates = hashMapOf<String, Any>(
+                                        emailList to FieldValue.delete()
+                                    )
+
+                                    localFriendRef.update(updates)
+                                        .addOnCompleteListener {
+                                            friendEmailList.remove(emailList)
+                                            friendEmailList.remove(name)
+                                        }
+                                }
+                            }
+                        }
+                    }
+
             }
 
         }
