@@ -50,11 +50,12 @@ class friendAdapter(val currentUser: String,
         val card: CardView = itemView.findViewById(R.id.chat_card_view)
         var img: ImageView = itemView.findViewById(R.id.img)
         val username: TextView = itemView.findViewById(R.id.username)
+        val btn_videoCall: ImageButton = itemView.findViewById(R.id.btn_videocall)
         val btn_friend_delete: ImageButton = itemView.findViewById(R.id.btn_friend_delete)
-        val btn_friend_check : ImageButton = itemView.findViewById(R.id.btn_check)
-
+        val btn_friend_check: ImageButton = itemView.findViewById(R.id.btn_check)
 
         init {
+
             val handler = Handler()
             handler.postDelayed(Runnable {
                 val db = Firebase.firestore
@@ -64,18 +65,21 @@ class friendAdapter(val currentUser: String,
                 val friendEmailListLocal = FriendFragment.friendEmailListLocal
                 friendEmailListLocal.remove("tmp")
                 //홀수인덱스: 이메일, 짝수인덱스: 이름
-                Log.d("friendEmailFullLocal", friendEmailListLocal.toString())
-                Log.d("friendEmailFullLocal", adapterPosition.toString())
-                Log.d("friendEmailLocalINDEX", friendEmailListLocal[adapterPosition])
+                Log.d("친구창", friendEmailListLocal.toString())
+                Log.d("친구창(포지션)", adapterPosition.toString())
+                Log.d("친구창", friendEmailListLocal[adapterPosition])
                 val emailList = friendEmailListLocal[adapterPosition]
 
 
                 btn_friend_delete.setOnClickListener {
+                    Log.d("친구창(포지션)", adapterPosition.toString())
+                    Log.d("친구창(클릭한항목의 이메일)", emailList)
                     //본인 계정에서 지우고싶은 이메일(친구) 삭제
                     Toast.makeText(itemView.context, "정말로 삭제 하시겠습니까??", Toast.LENGTH_SHORT).show()
                     btn_friend_check.visibility = View.VISIBLE
                 }
                 btn_friend_check.setOnClickListener {
+                    Log.d("친구창(포지션)", adapterPosition.toString())
                     val updates = hashMapOf<String, Any>(
                         emailList to FieldValue.delete()
                     )
@@ -83,7 +87,19 @@ class friendAdapter(val currentUser: String,
                     localFriendRef.update(updates)
                         .addOnCompleteListener {
                             friendEmailListLocal.remove(emailList)
+                            btn_friend_check.visibility = View.GONE
+                            btn_friend_delete.visibility = View.GONE
+                            btn_videoCall.visibility = View.GONE
+                            Toast.makeText(itemView.context, "새로고침 해주세요", Toast.LENGTH_SHORT)
                         }
+
+                    //FriendFragment.adapter.notifyDataSetChanged()
+                }
+
+                FriendFragment.btnRefresh.setOnClickListener {
+                    btn_friend_check.visibility = View.GONE
+                    btn_friend_delete.visibility = View.VISIBLE
+                    btn_videoCall.visibility = View.VISIBLE
                 }
 
             }, 1500) //딜레이 타임 조절

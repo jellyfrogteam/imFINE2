@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -32,7 +33,6 @@ class FriendFragment : Fragment() {
     private var _binding: FragmentFriendBinding? = null
     private val binding get() = _binding!!
     private val currentUser = "dad"
-    private lateinit var adapter: friendAdapter
 
     private lateinit var adapter2: AddFriendAdapter
     private val addFriendList = arrayListOf<AddFriendLayout>()
@@ -47,11 +47,15 @@ class FriendFragment : Fragment() {
 //            Log.d("Position", "type: ${type}")
 //            return type
 //        }
+        lateinit var adapter: friendAdapter
+
         val friendList = arrayListOf<friendLayout>()    // 리사이클러 뷰 목록
         var items = arrayListOf<friendLayout>()
 
         var friendEmailList: ArrayList<String> = arrayListOf("tmp")
         var friendEmailListLocal: ArrayList<String> = arrayListOf("tmp")
+
+        lateinit var btnRefresh: ImageButton
 
     }
 
@@ -87,6 +91,9 @@ class FriendFragment : Fragment() {
                 viewSwitch = true
             }
         }
+
+
+        btnRefresh = binding.btnRefresh
 
 
         return view
@@ -146,7 +153,7 @@ class FriendFragment : Fragment() {
 
 
 
-        binding.btnRefresh.setOnClickListener {
+        btnRefresh.setOnClickListener {
             getDataAndRefresh()
         }
 
@@ -161,24 +168,25 @@ class FriendFragment : Fragment() {
             .addSnapshotListener { snapshots, e ->
                 addItems.clear()
                 addFriendList.clear()
+                friendEmailList.clear()
 
                 val friendInfo = snapshots?.data?.keys
-                Log.d("FirestoreTest", snapshots?.data?.keys.toString())
+                Log.d("친구요청 대기", snapshots?.data?.keys.toString())
                 //Log.d("FirestoreTest", value?.data?.values.toString())
 
                 if (friendInfo!!.size >= 2) {
                     for (i in friendInfo!!) {
                         val emailFull = i.toString().plus(".com")
                         if (emailFull != acct.email) {
-                            Log.d("FirestoreTestEMAIL", i)
+                            Log.d("친구요청 대기", i)
                             snapshots?.getString(emailFull)?.let {
-                                Log.d("FirestoreTest", it)
+                                Log.d("친구요청 대기", it)
                                 val values: List<String> = it.split(",")
                                 val name = values[0]
                                 val photoUrl = values[1].trim()
                                 val status = values[2].trim()
                                 Log.d(
-                                    "FirestoreTestVALUES",
+                                    "친구요청 대기",
                                     "name: ${name}, photoUrl: ${photoUrl}, status: $status"
                                 )
                                 val itemAdd = AddFriendLayout(photoUrl, name)
@@ -186,19 +194,19 @@ class FriendFragment : Fragment() {
                                 addFriendList.add(itemAdd) //친구이름
 
                                 //arrayList 중복검사
-                                if(!friendEmailList.contains(emailFull) && !friendEmailList.contains(name)){
+                                if(!friendEmailList.contains(emailFull) && !friendEmailList.contains(name) && !status.isNullOrEmpty()){
                                     friendEmailList.add(emailFull)
                                     friendEmailList.add(name)
                                 }
 
-
+                                Log.d("친구요청 대기(변화값)", friendEmailList.toString())
                                 if(status == "수락됨"){
                                     addItems.remove(itemAdd) // 사진url
                                     addFriendList.remove(itemAdd) //친구이름
-//                                    if(friendEmailList.contains(emailFull) && friendEmailList.contains(name)){
-//                                        friendEmailList.remove(emailFull)
-//                                        friendEmailList.remove(name)
-//                                    }
+                                    if(friendEmailList.contains(emailFull) && friendEmailList.contains(name)){
+                                        friendEmailList.remove(emailFull)
+                                        friendEmailList.remove(name)
+                                    }
                                 }
                             }
                             adapter2.notifyDataSetChanged()
@@ -220,6 +228,7 @@ class FriendFragment : Fragment() {
 //                var status = ""
                 items.clear()
                 friendList.clear()
+                friendEmailListLocal.clear()
 
                 if (!it.data?.keys.isNullOrEmpty()) {
                     val friendEmail = it.data?.keys
@@ -256,6 +265,9 @@ class FriendFragment : Fragment() {
             .addOnFailureListener{
 
             }
+
+        Log.d("정보가져오기(임시배열값)요청창", friendEmailList.toString())
+        Log.d("정보가져오기(임시배열값)친구창", friendEmailListLocal.toString())
     }
 
 

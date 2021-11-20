@@ -86,9 +86,9 @@ class AddFriendAdapter(val currentUser: String,
                 val friendEmailList = FriendFragment.friendEmailList
                 friendEmailList.remove("tmp")
                 //홀수인덱스: 이메일, 짝수인덱스: 이름
-                Log.d("friendEmailFull", friendEmailList.toString())
-                Log.d("friendEmailFull", adapterPosition.toString())
-                Log.d("friendEmailFullINDEX", friendEmailList[adapterPosition*2])
+                Log.d("친구요청창", friendEmailList.toString())
+                Log.d("친구요청창", adapterPosition.toString())
+                Log.d("친구요청창", friendEmailList[adapterPosition*2])
                 val emailList = friendEmailList[adapterPosition*2]
 
 
@@ -108,13 +108,13 @@ class AddFriendAdapter(val currentUser: String,
 
                             if (emailFull == emailList) {
                                     it?.getString(emailFull)?.let {
-                                        Log.d("FirestoreTest", it)
+                                        Log.d("친구요청창", it)
                                         val values: List<String> = it.split(",")
                                         val name = values[0]
                                         val photoUrl = values[1].trim()
                                         val status = values[2].trim()
                                         Log.d(
-                                            "FirestoreTestVALUES",
+                                            "친구요청창",
                                             "name: ${name}, photoUrl: ${photoUrl}, status: ${status}"
                                         )
 
@@ -123,10 +123,10 @@ class AddFriendAdapter(val currentUser: String,
                                             name.plus(", ").plus(photoUrl).plus(", ").plus("수락됨")
                                         )
                                             .addOnSuccessListener {
-                                                Log.d("UpdateTest", name.plus(", ").plus(photoUrl).plus(", ").plus("수락됨"))
+                                                Log.d("친구요청창UpdateTest", name.plus(", ").plus(photoUrl).plus(", ").plus("수락됨"))
                                                 friendEmailList.remove(emailList)
                                                 friendEmailList.remove(name)
-                                                Log.d("UpdateTest", friendEmailList.toString())
+                                                Log.d("친구요청창UpdateTest", friendEmailList.toString())
 
                                                 //친구 요청 보낸 사용자도 이메일 추가
                                                 remoteFriend.update(
@@ -134,6 +134,7 @@ class AddFriendAdapter(val currentUser: String,
 //                                                    name.plus(", ").plus(photoUrl).plus(", ").plus("수락됨")
                                                     acct.displayName.plus(", ").plus(acct.photoUrl).plus(", ").plus("수락됨")
                                                 )
+                                                FriendFragment.adapter.notifyDataSetChanged()
                                             }
                                             .addOnFailureListener {
 
@@ -164,9 +165,9 @@ class AddFriendAdapter(val currentUser: String,
                 val friendEmailList = FriendFragment.friendEmailList
                 friendEmailList.remove("tmp")
                 //홀수인덱스: 이메일, 짝수인덱스: 이름
-                Log.d("friendEmailFull", friendEmailList.toString())
-                Log.d("friendEmailFull", adapterPosition.toString())
-                Log.d("friendEmailFullINDEX", friendEmailList[adapterPosition*2])
+                Log.d("친구요청창", friendEmailList.toString())
+                Log.d("친구요청창", adapterPosition.toString())
+                Log.d("친구요청창", friendEmailList[adapterPosition*2])
                 val emailList = friendEmailList[adapterPosition*2]
 
 
@@ -185,13 +186,13 @@ class AddFriendAdapter(val currentUser: String,
 
                             if (emailFull == emailList) {
                                 it?.getString(emailFull)?.let {
-                                    Log.d("FirestoreTest", it)
+                                    Log.d("친구요청창", it)
                                     val values: List<String> = it.split(",")
                                     val name = values[0]
                                     val photoUrl = values[1].trim()
                                     val status = values[2].trim()
                                     Log.d(
-                                        "FirestoreTestVALUES",
+                                        "친구요청창",
                                         "name: ${name}, photoUrl: ${photoUrl}, status: ${status}"
                                     )
 
