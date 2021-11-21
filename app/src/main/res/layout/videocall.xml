@@ -20,26 +20,15 @@
 
 
     <ImageButton
-        android:id="@+id/btn_cameraswitch"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="15dp"
-        android:background="@drawable/style_btn_cameraswitch"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <ImageButton
         android:id="@+id/btn_siren"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="50dp"
         android:visibility="gone"
         android:background="@drawable/style_btn_srien"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_cameraswitch"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
         android:id="@+id/btn_chat"

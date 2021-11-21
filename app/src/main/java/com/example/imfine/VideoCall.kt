@@ -151,11 +151,6 @@ class VideoCall : AppCompatActivity() {
 
         val handler = Handler()
         handler.postDelayed(Runnable {
-            btn_cameraswitch.visibility = View.VISIBLE
-        }, 10000) //딜레이 타임 조절
-
-
-        handler.postDelayed(Runnable {
             btn_chat.visibility = View.VISIBLE
             btn_siren.visibility = View.VISIBLE
             btn_next.visibility = View.VISIBLE
@@ -221,7 +216,7 @@ class VideoCall : AppCompatActivity() {
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
-                    finish()
+                    destroyWebviewAndFirebase()
                 }
 
                 override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
