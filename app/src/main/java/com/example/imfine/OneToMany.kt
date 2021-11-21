@@ -13,6 +13,7 @@ import android.widget.ImageButton
 class OneToMany : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var exit : ImageButton
+    private lateinit var btnOnetomanyRefresh: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,12 +21,15 @@ class OneToMany : AppCompatActivity() {
 
 
         exit = findViewById(R.id.btn_exit_otm)
+        btnOnetomanyRefresh = findViewById(R.id.btn_onetomany_refresh)
         webView = findViewById(R.id.webview_otm)
+
+
         webView.webViewClient = WebViewClient()
 
         webView.webChromeClient = object : WebChromeClient() {
             override fun onPermissionRequest(request: PermissionRequest) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     request.grant(request.resources)
                 }
             }
@@ -65,7 +69,9 @@ class OneToMany : AppCompatActivity() {
         Log.d("Adad",webUrl.plus(SplashFind_otm.Room_ID_otm))
 
 
-
+        btnOnetomanyRefresh.setOnClickListener {
+            webView.reload()
+        }
 
 
         exit.setOnClickListener {
