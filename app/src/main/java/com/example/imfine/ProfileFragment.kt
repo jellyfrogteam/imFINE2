@@ -13,8 +13,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile.*
+import org.w3c.dom.Text
 
 class ProfileFragment : Fragment() {
     private var mAuth: FirebaseAuth? = null
@@ -32,6 +34,16 @@ class ProfileFragment : Fragment() {
         val source : TextView? = view.findViewById(R.id.source)
         var sw = true
         val login = Intent(activity,login::class.java)
+
+        val nameContent: TextView = view.findViewById(R.id.profile_name_content)
+        val emailContent: TextView = view.findViewById(R.id.profile_email_content)
+        val acct = GoogleSignIn.getLastSignedInAccount(context)
+
+        nameContent.text = acct.displayName
+        emailContent.text = acct.email
+
+
+
         mAuth = FirebaseAuth.getInstance()
         btn_google_exit?.setOnClickListener {
             revokeAccess()
