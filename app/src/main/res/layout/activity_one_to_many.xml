@@ -21,4 +21,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <ImageButton
+        android:id="@+id/btn_onetomany_refresh"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@drawable/style_btn_refresh"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
