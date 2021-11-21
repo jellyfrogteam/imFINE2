@@ -79,6 +79,10 @@ class HomeFragment : Fragment() {
 
         }
 
+        everyOne.setOnClickListener {
+            val splashFind_otm = Intent(activity, SplashFind_otm::class.java)
+            startActivity(splashFind_otm)
+        }
         btn_Convert.setOnClickListener {
 
         }

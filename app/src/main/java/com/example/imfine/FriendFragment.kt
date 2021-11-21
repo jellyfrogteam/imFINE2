@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,8 +53,8 @@ class FriendFragment : Fragment() {
         val friendList = arrayListOf<friendLayout>()    // 리사이클러 뷰 목록
         var items = arrayListOf<friendLayout>()
 
-        var friendEmailList: ArrayList<String> = arrayListOf("tmp")
-        var friendEmailListLocal: ArrayList<String> = arrayListOf("tmp")
+        var friendEmailList: ArrayList<String> = arrayListOf()
+        var myFriendEmailList: ArrayList<String> = arrayListOf()
 
         lateinit var btnRefresh: ImageButton
 
@@ -110,6 +111,9 @@ class FriendFragment : Fragment() {
         val personImgUrl = acct.photoUrl
         val personName = acct.displayName
 
+
+        val test_text = view.findViewById<TextView>(R.id.test_text)
+        test_text.text = acct.displayName
 
         //클릭 리스너
         // 서브RV 누르면 삭제
@@ -176,45 +180,46 @@ class FriendFragment : Fragment() {
 
                 if (friendInfo!!.size >= 2) {
                     for (i in friendInfo!!) {
-                        val emailFull = i.toString().plus(".com")
-                        if (emailFull != acct.email) {
-                            Log.d("친구요청 대기", i)
-                            snapshots?.getString(emailFull)?.let {
-                                Log.d("친구요청 대기", it)
-                                val values: List<String> = it.split(",")
-                                val name = values[0]
-                                val photoUrl = values[1].trim()
-                                val status = values[2].trim()
-                                Log.d(
-                                    "친구요청 대기",
-                                    "name: ${name}, photoUrl: ${photoUrl}, status: $status"
-                                )
-                                val itemAdd = AddFriendLayout(photoUrl, name)
-                                addItems.add(itemAdd) // 사진url
-                                addFriendList.add(itemAdd) //친구이름
+                        if(i != "request"){ //콜 유무
+                            val emailFull = i.toString().plus(".com")
+                            if (emailFull != acct.email) {
+                                Log.d("친구요청 대기", i)
+                                snapshots?.getString(emailFull)?.let {
+                                    Log.d("친구요청 대기", it)
+                                    val values: List<String> = it.split(",")
+                                    val name = values[0]
+                                    val photoUrl = values[1].trim()
+                                    val status = values[2].trim()
+                                    Log.d(
+                                        "친구요청 대기",
+                                        "name: ${name}, photoUrl: ${photoUrl}, status: $status"
+                                    )
+                                    val itemAdd = AddFriendLayout(photoUrl, name)
+                                    addItems.add(itemAdd) // 사진url
+                                    addFriendList.add(itemAdd) //친구이름
 
-                                //arrayList 중복검사
-                                if(!friendEmailList.contains(emailFull) && !friendEmailList.contains(name) && !status.isNullOrEmpty()){
-                                    friendEmailList.add(emailFull)
-                                    friendEmailList.add(name)
-                                }
+                                    //arrayList 중복검사
+                                    if(!friendEmailList.contains(emailFull) && !friendEmailList.contains(name) && !status.isNullOrEmpty()){
+                                        friendEmailList.add(emailFull)
+                                        friendEmailList.add(name)
+                                    }
 
-                                Log.d("친구요청 대기(변화값)", friendEmailList.toString())
-                                if(status == "수락됨"){
-                                    addItems.remove(itemAdd) // 사진url
-                                    addFriendList.remove(itemAdd) //친구이름
-                                    if(friendEmailList.contains(emailFull) && friendEmailList.contains(name)){
-                                        friendEmailList.remove(emailFull)
-                                        friendEmailList.remove(name)
+                                    Log.d("친구요청 대기(변화값)", friendEmailList.toString())
+                                    if(status == "수락됨"){
+                                        addItems.remove(itemAdd) // 사진url
+                                        addFriendList.remove(itemAdd) //친구이름
+                                        if(friendEmailList.contains(emailFull) && friendEmailList.contains(name)){
+                                            friendEmailList.remove(emailFull)
+                                            friendEmailList.remove(name)
+                                        }
                                     }
                                 }
+                                adapter2.notifyDataSetChanged()
                             }
-                            adapter2.notifyDataSetChanged()
+
                         }
                     }
                 }
-
-
 
             }
     }
@@ -228,7 +233,7 @@ class FriendFragment : Fragment() {
 //                var status = ""
                 items.clear()
                 friendList.clear()
-                friendEmailListLocal.clear()
+                myFriendEmailList.clear()
 
                 if (!it.data?.keys.isNullOrEmpty()) {
                     val friendEmail = it.data?.keys
@@ -239,7 +244,7 @@ class FriendFragment : Fragment() {
                             val name = splitData?.get(0).toString()
                             val photoUrl = splitData?.get(1).toString().trim()
                             val status = splitData?.get(2).toString().trim()
-                            Log.d("정보가져오기(전부)", "name: ${name}, photo: ${photoUrl}, status: ${status}")
+                            Log.d("찐막(새로고침)", "name: ${name}, photo: ${photoUrl}, status: ${status}")
 
                             val item = friendLayout(photoUrl, name)
                             if(status == "수락됨"){
@@ -247,10 +252,8 @@ class FriendFragment : Fragment() {
                                 friendList.add(item) //구글 이름
                                 items.add(item) // 사진url
                                 adapter.notifyDataSetChanged()
-
-                                //arrayList 중복검사
-                                if(!friendEmailListLocal.contains(emailFull)){
-                                    friendEmailListLocal.add(emailFull)
+                                if(!friendEmailList.contains(emailFull) && !status.isNullOrEmpty()){
+                                    myFriendEmailList.add(emailFull)
                                 }
                             }else {
                                 friendList.remove(item) //구글 이름
@@ -267,7 +270,6 @@ class FriendFragment : Fragment() {
             }
 
         Log.d("정보가져오기(임시배열값)요청창", friendEmailList.toString())
-        Log.d("정보가져오기(임시배열값)친구창", friendEmailListLocal.toString())
     }
 
 

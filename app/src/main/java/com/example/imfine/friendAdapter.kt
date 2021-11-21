@@ -1,6 +1,7 @@
 package com.example.imfine
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Movie
 import android.opengl.Visibility
 import android.os.Handler
@@ -13,6 +14,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -40,6 +43,10 @@ class friendAdapter(val currentUser: String,
         Glide.with(holder.itemView.context)
             .load(item.img).apply(RequestOptions().circleCrop())
             .into(holder.img)
+
+        holder.itemView.setOnClickListener {
+
+        }
     }
 
     override fun getItemCount(): Int {
@@ -51,58 +58,48 @@ class friendAdapter(val currentUser: String,
         var img: ImageView = itemView.findViewById(R.id.img)
         val username: TextView = itemView.findViewById(R.id.username)
         val btn_videoCall: ImageButton = itemView.findViewById(R.id.btn_videocall)
-        val btn_friend_delete: ImageButton = itemView.findViewById(R.id.btn_friend_delete)
-        val btn_friend_check: ImageButton = itemView.findViewById(R.id.btn_check)
-
         init {
+
+            itemView.setOnClickListener {
+                //리사이클러뷰 아이템 클릭시
+            }
 
             val handler = Handler()
             handler.postDelayed(Runnable {
+                var myFriendEmailList = FriendFragment.myFriendEmailList
+                Log.d("친구콜 내친구목록", myFriendEmailList.toString())
+
                 val db = Firebase.firestore
                 val acct = GoogleSignIn.getLastSignedInAccount(itemView.context)
                 val localFriendRef = db.collection("Friends").document(acct.email)
 
-                val friendEmailListLocal = FriendFragment.friendEmailListLocal
-                friendEmailListLocal.remove("tmp")
-                //홀수인덱스: 이메일, 짝수인덱스: 이름
-                Log.d("친구창", friendEmailListLocal.toString())
-                Log.d("친구창(포지션)", adapterPosition.toString())
-                Log.d("친구창", friendEmailListLocal[adapterPosition])
-                val emailList = friendEmailListLocal[adapterPosition]
+                val callInfo = mapOf(
+                    "request" to "${acct.id}",
+                    "requestName" to "${acct.displayName}"
+                    //이메일이 파이어스토어에 등록될때 aaa@gmail.com이 aaa@gmail하고 .com으로 나눠짐;;
+                )
+
+                btn_videoCall.setOnClickListener {
+                    val friendEmail = myFriendEmailList[adapterPosition]
+                    Log.d("친구콜 선택된 친구목록", myFriendEmailList[adapterPosition])
 
 
-                btn_friend_delete.setOnClickListener {
-                    Log.d("친구창(포지션)", adapterPosition.toString())
-                    Log.d("친구창(클릭한항목의 이메일)", emailList)
-                    //본인 계정에서 지우고싶은 이메일(친구) 삭제
-                    Toast.makeText(itemView.context, "정말로 삭제 하시겠습니까??", Toast.LENGTH_SHORT).show()
-                    btn_friend_check.visibility = View.VISIBLE
-                }
-                btn_friend_check.setOnClickListener {
-                    Log.d("친구창(포지션)", adapterPosition.toString())
-                    val updates = hashMapOf<String, Any>(
-                        emailList to FieldValue.delete()
-                    )
+                    db.collection("Friends").document(friendEmail)
+                        .update(callInfo)
+                        .addOnSuccessListener {
+                            //웹뷰 이동
+                            MainPage.webViewFlag = false
+                            val friendVideoCall = Intent(itemView.context, FriendVideoCall::class.java)
+                            startActivity(itemView.context, friendVideoCall, null)
+                        }.addOnFailureListener {
 
-                    localFriendRef.update(updates)
-                        .addOnCompleteListener {
-                            friendEmailListLocal.remove(emailList)
-                            btn_friend_check.visibility = View.GONE
-                            btn_friend_delete.visibility = View.GONE
-                            btn_videoCall.visibility = View.GONE
-                            Toast.makeText(itemView.context, "새로고침 해주세요", Toast.LENGTH_SHORT)
                         }
-
-                    //FriendFragment.adapter.notifyDataSetChanged()
                 }
 
-                FriendFragment.btnRefresh.setOnClickListener {
-                    btn_friend_check.visibility = View.GONE
-                    btn_friend_delete.visibility = View.VISIBLE
-                    btn_videoCall.visibility = View.VISIBLE
-                }
 
-            }, 1500) //딜레이 타임 조절
+
+            }, 500) //딜레이 타임 조절
+
         }
     }
 

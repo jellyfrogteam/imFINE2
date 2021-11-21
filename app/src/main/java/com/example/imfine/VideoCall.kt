@@ -78,7 +78,7 @@ class VideoCall : AppCompatActivity() {
 
         webView.webChromeClient = object : WebChromeClient() {
             override fun onPermissionRequest(request: PermissionRequest) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     request.grant(request.resources)
                 }
             }
@@ -134,9 +134,7 @@ class VideoCall : AppCompatActivity() {
         }
 
         btn_exit.setOnClickListener {
-            //onDestroy()
-            //webView.onPause()
-            finish()
+            destroyWebviewAndFirebase()
         }
 
         btn_chat.setOnClickListener {
@@ -297,14 +295,9 @@ class VideoCall : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
-        } else {
-            destroyWebviewAndFirebase()
-            finish()
-            Log.d("delete", "backpressed")
-            Log.d("roomTest", "뒤로가기키 누르고 난 후${Room_ID.toString()}")
-        }
+        destroyWebviewAndFirebase()
+        Log.d("delete", "backpressed")
+        Log.d("roomTest", "뒤로가기키 누르고 난 후${Room_ID.toString()}")
     }
 
 
@@ -340,18 +333,18 @@ class VideoCall : AppCompatActivity() {
 //    }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
-        webView.destroy()
-        destroyWebviewAndFirebase()
-        Log.d("roomTest", "onDestroy${Room_ID.toString()}")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        webView.destroy()
-        destroyWebviewAndFirebase()
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        webView.destroy()
+//        destroyWebviewAndFirebase()
+//        Log.d("roomTest", "onDestroy${Room_ID.toString()}")
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        webView.destroy()
+//        destroyWebviewAndFirebase()
+//    }
 
 
     fun destroyWebviewAndFirebase(){
@@ -362,6 +355,7 @@ class VideoCall : AppCompatActivity() {
             myRef!!.setValue(null)
         }
 
+        finish()
     }
 
 }

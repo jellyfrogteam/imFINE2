@@ -84,7 +84,6 @@ class AddFriendAdapter(val currentUser: String,
 //                FriendFragment.friendType(true)
 
                 val friendEmailList = FriendFragment.friendEmailList
-                friendEmailList.remove("tmp")
                 //홀수인덱스: 이메일, 짝수인덱스: 이름
                 Log.d("친구요청창", friendEmailList.toString())
                 Log.d("친구요청창", adapterPosition.toString())
