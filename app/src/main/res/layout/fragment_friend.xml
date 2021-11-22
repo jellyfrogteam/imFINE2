@@ -38,12 +38,6 @@
           android:textStyle="bold" />
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/test_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:textSize="25dp"/>
 
 
     <androidx.recyclerview.widget.RecyclerView

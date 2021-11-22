@@ -112,9 +112,6 @@ class FriendFragment : Fragment() {
         val personName = acct.displayName
 
 
-        val test_text = view.findViewById<TextView>(R.id.test_text)
-        test_text.text = acct.displayName
-
         //클릭 리스너
         // 서브RV 누르면 삭제
 //        adapterRVChecked.setItemClickListener(object : AdditemRVAdapterChecked.ItemClickListener {

@@ -62,7 +62,7 @@ class VideoCall : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.videocall)
-        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+//        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE) //화면캡처방지
 //        전송 버튼을 누르면 상대방 아이디와 채팅한 적있는지 검사한다. : MessageActivity - chekChatRoom()
 //        메시지를 보낸다. : MessageActivity - sendMsgToDataBase()
 //        리싸이클러뷰 어댑터를 통해 채팅 내용을 읽어들인다.  : RecyclerViewAdapter - getMessageList()
